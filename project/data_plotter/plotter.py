@@ -146,4 +146,42 @@ class Dataset_plots():
             logger.exception('raised exception at {}: {}'.format(logger.name+'.'+self.plot_Hist_Pdf_Cdf.__name__, exc))
 
     
-            
+    def plot_with_plotly_express(self, plot_type, x_col, y_col, graph_title=None):
+        """
+        Plots a basic graph with Plotly Express.
+        Parameters
+        ----------
+        plot_type : string
+                Graph type, which should be a valid type among the ones provided by px (plotly express)
+
+        x_col: column name on the x axis
+        
+        y_col: column on the y axis
+
+        graph_title: title of the graph
+
+        Returns
+        -------
+        fig : plotly figure 
+
+        Example:
+        plot_with_plotly_express(plot_type='bar', x_col='associatedAccountTypeDesc', y_col='count', 
+                                 graph_title='número de acuerdos por cada tipo entre clientes Evo')
+ 
+        """
+        try:
+            import plotly.express as px
+
+            basic_plot_cases = {'bar': px.bar(self.dataframe, x=x_col, y=y_col, title=graph_title) ,
+                                'scatter': px.scatter(self.dataframe, x=x_col, y=y_col, title=graph_title),
+                                'line': px.line(self.dataframe, x=x_col, y=y_col, title=graph_title)
+                                }
+
+            fig = basic_plot_cases[plot_type]
+            fig.show()
+
+            return fig 
+
+        except Exception as exc:
+            return exc
+  
