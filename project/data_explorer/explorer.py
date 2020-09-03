@@ -101,9 +101,41 @@ class Dataset_info_provider():
             spark = SparkSession.builder.getOrCreate()
             self.spark_ = spark
 
-    def get_unique_col_vals_from_spark_df(self, column_name):
+    def get_unique_attribute_values(self, column_name):
+        """return the unique values found in a dataframe column
+
+        Args:
+            column_name (string): 
+
+        Returns:
+            array: serie de valores únicos de la 'clomun_name'
+        """
         try:
+
             return [x[column_name] for x in self.dataframe_.select(column_name).distinct().collect()]
     
         except Exception as exc:
             return exc
+
+    def filter_dataframe_by_column_value(self, column_name, value):
+        """filters rows of a dataframe (the one in self.dataframe_) given a column name to filter on and the desired value;
+           it accepts a spark dataframe, pandas dataframe or koalas dataframe
+        Args:
+            column_name (string): attribute to filter on
+            value (object): value of the same type of the column values
+
+        Returns:
+            dataframe: the filtered dataframe; it could be an empty dataframe
+        """
+        try:
+            dataframe_type = type(self.dataframe_)
+
+            if 'spark' in str(dataframe_type):
+                return  self.dataframe_.filter(self.dataframe_[column_name]==value)
+
+            else:
+                value_mask = self.dataframe_[column_name] == value
+                return self.dataframe_[value_mask]
+
+        except Exception as exc:
+            return exc 
