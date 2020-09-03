@@ -50,7 +50,7 @@ class Blob_storage_info_provider():
             blob_st_path = self.root_path_.format(container=self.container_name_, storage_acct=self.account_name_)
             self.blob_st_path_ = blob_st_path
             
-            return dbutils.fs.ls(blob_st_path)
+            return self.dbutils_.fs.ls(blob_st_path)
             
         except Exception as exc:
             #logger.exception('raised exception at {}: {}'.format(logger.name+'.'+self.build_data_frame_struct.__name__, exc))
@@ -60,7 +60,7 @@ class Blob_storage_info_provider():
         try:
             blob_st_child_path = self.blob_st_path_ + child_dir_name
             
-            return dbutils.fs.ls(blob_st_child_path)
+            return self.dbutils_.fs.ls(blob_st_child_path)
             
         except Exception as exc:
             #logger.exception('raised exception at {}: {}'.format(logger.name+'.'+self.build_data_frame_struct.__name__, exc))
