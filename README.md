@@ -10,3 +10,5 @@ This includes the use of external open source packages like pandas_profiling, wh
 
 The idea is to implement helpers in the fashion of object-oriented programming, to make it more reusable; we can also use the concept of snippets, in case a code is a little standalone helper.
 
+## About
+© This library is developed at the BigData & Digital Innovation group at the EVO Bank.
