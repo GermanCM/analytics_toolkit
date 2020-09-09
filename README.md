@@ -1,9 +1,9 @@
 # Analytics_toolkit
 ---
 
-This is a repository to allocate internal utilities for several steps in an analytics pipeline, like data extraction, exploratory analysis, visualizations, data processing, etc
+This is a repository to allocate internal utilities for several steps in an analytics pipeline, like data extraction, exploratory analysis, visualizations, data processing, etc.
 
-This includes a battery of tests with which the developed modules should be tested, both from a operational and logical perspective.
+This includes a battery of tests with which the developed modules should be tested, both from an operational and business-logical perspective.
 
 The main idea of this repository could be something as follows:
 
