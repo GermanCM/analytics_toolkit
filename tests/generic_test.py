@@ -2,7 +2,6 @@
 import unittest
 import pytest
 
-#%%
 class CodeTests(unittest.TestCase):
     
     def test_array_length(self):
@@ -21,6 +20,14 @@ class CodeTests(unittest.TestCase):
         get_blob_content_obj = explorer.Blob_storage_info_provider(blob_st_root_path, CONTAINER, STORAGE_ACCOUNT, SAS_KEY)
         print(get_blob_content_obj.display_root_dir_content())
 
+    def test_read_data_from_cluster(self):
+        from data_extractor import extractor
+        
+        extractor_obj = extractor.Data_extractor()
+        from_parquet_df = extractor_obj.read_remote_data('parquet', '/mnt/analytics/pai/CardMovementNew')
+        
+        self.assertGreater(from_parquet_df.count(), 0) 
+
     def test_get_unique_attribute_values(self):
         import pandas as pd
         from data_explorer import explorer
@@ -31,4 +38,4 @@ class CodeTests(unittest.TestCase):
 
         unique_col_A_values = explorer_obj.get_unique_attribute_values('col_A')
         self.assertEqual(unique_col_A_values.all(),np.array([1, 2, 7]).all())
-        
+

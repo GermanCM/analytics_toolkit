@@ -29,12 +29,11 @@ class Blob_storage_info_provider():
     >>> get_blob_content_obj = Blob_storage_info_provider(blob_st_root_path, CONTAINER, STORAGE_ACCOUNT, SAS_KEY)
     """
 
-    def __init__(self, root_path, container_name, account_name, current_env = 'local', sas_key=None):
+    def __init__(self, root_path, container_name, account_name, sas_key=None):
         self.root_path_ = root_path
         self.container_name_ = container_name
         self.account_name_ = account_name
         self.key_ = sas_key
-        self.current_env_ = current_env
 
         from pyspark.sql import SparkSession
         from pyspark.dbutils import DBUtils
@@ -99,9 +98,7 @@ class Dataset_info_provider():
     ----------
     dataframe: pandas, koalas, spark dataframe
         dataset containing the info we want to retrieve 
-    current_env: 
-        whether 'local' or 'cloud' (in case we want to run this code on a cloud provider like Azure Databricks)
-
+    
     Examples
     --------
     >>> dataset_info_provider = Dataset_info_provider(this_mov_type_movs)
@@ -112,16 +109,14 @@ class Dataset_info_provider():
     
     """
 
-    def __init__(self, dataframe, current_env = 'local'):
+    def __init__(self, dataframe):
         self.dataframe_ = dataframe
-        self.current_env_ = current_env
 
-        if self.current_env_ == 'local':
-            from pyspark.sql import SparkSession
-            from pyspark.dbutils import DBUtils
+        from pyspark.sql import SparkSession
+        from pyspark.dbutils import DBUtils
 
-            spark = SparkSession.builder.getOrCreate()
-            self.spark_ = spark
+        spark = SparkSession.builder.getOrCreate()
+        self.spark_ = spark
 
     def get_unique_attribute_values(self, column_name):
         """
