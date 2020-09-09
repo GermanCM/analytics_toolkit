@@ -31,3 +31,5 @@ In addition to the purely code oriented functions, we can include tools focused 
 ![Alt text](/pics/profile_report_2.png  "EDA example")
 
 
+## About
+© This library is developed at the BigData & Digital Innovation group at the EVO Bank.
