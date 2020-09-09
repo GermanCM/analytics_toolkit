@@ -5,14 +5,19 @@ class Blob_storage_info_provider():
 
     Parameters
     ----------
-    root_path: root path of the azure blob storage system 
-    container_name: blob storage container name
-    account_name: name of the associated account
-    sas_key: access key
+    root_path: string 
+        root path of the azure blob storage system 
+    container_name: string 
+        blob storage container name
+    account_name: string 
+        name of the associated account
+    sas_key: string 
+        access key
 
     Attributes
     ----------
-    blob_st_path_: root path updated with credentials
+    blob_st_path_: string 
+        root path updated with credentials
 
     Examples
     --------
@@ -22,7 +27,6 @@ class Blob_storage_info_provider():
     >>> blob_st_root_path = "wasbs://{container}@{storage_acct}.blob.core.windows.net"
 
     >>> get_blob_content_obj = Blob_storage_info_provider(blob_st_root_path, CONTAINER, STORAGE_ACCOUNT, SAS_KEY)
-
     """
 
     def __init__(self, root_path, container_name, account_name, current_env = 'local', sas_key=None):
@@ -46,6 +50,15 @@ class Blob_storage_info_provider():
             "{access_key}".format(access_key=self.key_))
 
     def display_root_dir_content(self):
+        """
+        Provides the content of the root directory
+
+        Examples
+        --------
+        >>> get_blob_content_obj = Blob_storage_info_provider(blob_st_root_path, CONTAINER, STORAGE_ACCOUNT, SAS_KEY)
+        >>> get_blob_content_obj.display_root_dir_content()
+
+        """
         try:
             blob_st_path = self.root_path_.format(container=self.container_name_, storage_acct=self.account_name_)
             self.blob_st_path_ = blob_st_path
@@ -57,6 +70,17 @@ class Blob_storage_info_provider():
             return('exception at display_root_dir_content: ', exc)
                 
     def display_child_dir_content(self, child_dir_name):
+        """
+        Generic class for accessing content stored in blob storage
+
+        Parameters
+        ----------
+        child_dir_name: string 
+            name of the child directory of the azure blob storage system to explore
+
+        >>> get_blob_content_obj = Blob_storage_info_provider(blob_st_root_path, CONTAINER, STORAGE_ACCOUNT, SAS_KEY)
+        >>> get_blob_content_obj.display_child_dir_content("/rsi")
+        """
         try:
             blob_st_child_path = self.blob_st_path_ + child_dir_name
             
@@ -74,12 +98,11 @@ class Dataset_info_provider():
 
     Parameters
     ----------
-    dataframe: dataset containing the info we want to retrieve 
-    current_env: whether 'local' or 'cloud' (in case we want to run this code on a cloud provider like Azure Databricks)
+    dataframe: pandas, koalas, spark dataframe
+        dataset containing the info we want to retrieve 
+    current_env: 
+        whether 'local' or 'cloud' (in case we want to run this code on a cloud provider like Azure Databricks)
 
-    Attributes
-    ----------
-    
     Examples
     --------
     >>> dataset_info_provider = Dataset_info_provider(this_mov_type_movs)
@@ -102,20 +125,39 @@ class Dataset_info_provider():
             self.spark_ = spark
 
     def get_unique_attribute_values(self, column_name):
-        """return the unique values found in a dataframe column
+        """
+        returns the unique values found in a dataframe column
 
-        Args:
-            column_name (string): 
+        Parameters
+        ----------
+        column_name: string 
+            column with the desired values to explore
 
-        Returns:
-            array: serie de valores únicos de la 'clomun_name'
+        Returns
+        -------
+            array: array of unique values from 'column_name'
+        
+        Examples
+        --------
+        >>> import pandas as pd
+        >>> from data_explorer import explorer 
+
+        >>> test_df = pd.DataFrame({'col_A': [1, 2, 2, 7], 'col_B': ['aa', 'bb', 'cc', 'dd'], 'col_C': [2, 43, 2, 87]})
+        >>> explorer_obj = explorer.Dataset_info_provider(test_df['A'])
+
+        >>> unique_categories_in_january_2020 = explorer_obj.get_unique_attribute_values('col_A')
+        
         """
         try:
+            if ('pandas' in str(type(test_df))) | ('koalas' in str(type(test_df))):
+                return self.dataframe_[column_name].unique()
 
-            return [x[column_name] for x in self.dataframe_.select(column_name).distinct().collect()]
+            elif 'spark' in str(type(self.dataframe_)):
+                return [x[column_name] for x in self.dataframe_.select(column_name).distinct().collect()]
     
         except Exception as exc:
             return exc
+
 
     def filter_dataframe_by_column_value(self, column_name, value):
         """filters rows of a dataframe (the one in self.dataframe_) given a column name to filter on and the desired value;

@@ -1,2 +1,12 @@
 .vscode/settings.json
 .DS_Store
+project/data_explorer/__pycache__/__init__.cpython-37.pyc
+project/data_explorer/__pycache__/explorer.cpython-37.pyc
+project/data_plotter/__pycache__/__init__.cpython-37.pyc
+project/data_processor/__pycache__/__init__.cpython-37.pyc
+project/data_tester/__pycache__/__init__.cpython-37.pyc
+project/data_tester/__pycache__/tester.cpython-37.pyc
+project/stat_checker/__pycache__/__init__.cpython-37.pyc
+tests/__pycache__/generic_test.cpython-37-pytest-6.0.1.pyc
+tests/__pycache__/tests.cpython-37-pytest-6.0.1.pyc
+tests/__pycache__/test_s.cpython-37-pytest-6.0.1.pyc
